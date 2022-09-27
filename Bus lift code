@@ -1,0 +1,101 @@
+long duration;
+int distance;
+
+int trigPin = 8;
+int echoPin = 9;
+int x;
+void setup() {
+  Serial.begin(9600);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  for (int i = 2; i <= 7; i++)
+  {
+    pinMode(i, OUTPUT);
+  }
+}
+
+void loop() {
+  x = testDistance();
+  if (x <= 7)
+  {
+    Serial.println("Person Waiting for lift");
+    liftDown();
+    delay(700);
+    still();
+    delay(10,000);
+    liftUp();
+    delay(700);
+    liftInside();
+    delay(1000);
+    still();
+    delay(10,000);
+    liftOutside();
+    delay(1000);
+    still();
+  }
+}
+
+int testDistance()
+{
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+
+  return distance;
+}
+
+void liftUp()
+{
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+}
+
+void liftDown()
+{
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, HIGH);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+}
+
+void still()
+{
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);  
+}
+
+void liftInside()
+{
+  digitalWrite(2, LOW);
+  digitalWrite(3, HIGH);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, HIGH);
+  digitalWrite(7, LOW);
+}
+
+void liftOutside()
+{
+  digitalWrite(2, HIGH);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, HIGH);
+}
